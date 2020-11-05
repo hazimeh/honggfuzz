@@ -616,7 +616,7 @@ static bool input_shouldReadNewFile(run_t* run) {
 }
 
 bool input_prepareStaticFile(run_t* run, bool rewind, bool needs_mangle) {
-    if (input_shouldReadNewFile(run)) {
+    if (run->global->cfg.preserveSeeds || input_shouldReadNewFile(run)) {
         for (;;) {
             if (!input_getNext(run, run->dynfile->path, /* rewind= */ rewind)) {
                 return false;

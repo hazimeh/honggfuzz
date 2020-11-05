@@ -380,6 +380,7 @@ bool cmdlineParse(int argc, char* argv[], honggfuzz_t* hfuzz) {
                 .only_printable    = false,
                 .minimize          = false,
                 .switchingToFDM    = false,
+                .preserveSeeds     = false,
             },
         .sanitizer =
             {
@@ -475,6 +476,7 @@ bool cmdlineParse(int argc, char* argv[], honggfuzz_t* hfuzz) {
         { { "persistent", no_argument, NULL, 'P' }, "Enable persistent fuzzing (use hfuzz_cc/hfuzz-clang to compile code). This will be auto-detected!!!" },
         { { "instrument", no_argument, NULL, 'z' }, "*DEFAULT-MODE-BY-DEFAULT* Enable compile-time instrumentation (use hfuzz_cc/hfuzz-clang to compile code)" },
         { { "minimize", no_argument, NULL, 'M' }, "Minimize the input corpus. It will most likely delete some corpus files (from the --input directory) if no --output is used!" },
+        { { "preserve_seeds", no_argument, NULL, 0x1001 }, "Do not attempt to truncate seeds for coverage exploration; use the seed file as-is." },
         { { "noinst", no_argument, NULL, 'x' }, "Static mode only, disable any instrumentation (hw/sw) feedback" },
         { { "keep_output", no_argument, NULL, 'Q' }, "Don't close children's stdin, stdout, stderr; can be noisy" },
         { { "timeout", required_argument, NULL, 't' }, "Timeout in seconds (default: 1 (second))" },
@@ -777,6 +779,9 @@ bool cmdlineParse(int argc, char* argv[], honggfuzz_t* hfuzz) {
                 hfuzz->arch_netbsd.symsWlFile = optarg;
                 break;
 #endif /* defined(_HF_ARCH_NETBSD) */
+            case 0x1001:
+                hfuzz->cfg.preserveSeeds = true;
+                break;
             default:
                 cmdlineUsage(argv[0], custom_opts);
                 return false;

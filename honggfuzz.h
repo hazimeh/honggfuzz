@@ -267,6 +267,7 @@ typedef struct {
         bool        only_printable;
         bool        minimize;
         bool        switchingToFDM;
+        bool        preserveSeeds;
     } cfg;
     struct {
         bool enable;
